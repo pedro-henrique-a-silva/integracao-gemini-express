@@ -5,7 +5,7 @@ services:
     build: .
     ports:
       - 3001:3001
-    working_dir: app-backend
+    working_dir: /app-backend
     command: run dev 
     volumes: 
       - ./src:/app-backend/src
@@ -13,21 +13,17 @@ services:
       db:
         condition: service_healthy
     environment:
-      APP_PORT=${APP_PORT}
-      JWT_SECRET=${JWT_SECRET}
-      GEMINI_API_KEY=${GEMINI_API_KEY}
-      DB_USER=${DB_USER}
-      DB_PASS=${DB_PASS}
-      DB_HOST=${DB_HOST}
-      DB_PORT=${DB_PORT}
+      - APP_PORT=${APP_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
   db:
     image: mysql:8.0.32
     container_name: db
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
-    restart: 'always'
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
