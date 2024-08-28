@@ -1,5 +1,6 @@
 import 'express-async-errors';
 import express, { NextFunction, Request, Response } from 'express';
+import path from 'path';
 import routes from '../adapters/routes';
 import CustomError from '../adapters/exceptions/CustomException';
 
@@ -12,6 +13,8 @@ app.use('/upload', routes);
 app.get('/', (req, res) => {
   res.status(200).send('Hello World');
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof CustomError) {
