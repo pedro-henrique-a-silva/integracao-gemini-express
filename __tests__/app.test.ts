@@ -1,4 +1,4 @@
-import app from '@infra/app';
+import app from '../src/infra/app';
 import request from "supertest"
 
 
