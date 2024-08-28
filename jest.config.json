@@ -1,12 +1,6 @@
 {
   "preset": "ts-jest",
   "testEnvironment": "node",
-  "moduleNameMapper": {
-    "^@infra/(.*)$": "<rootDir>/src/infra/$1",
-    "^@useCase/(.*)$": "<rootDir>/src/domain/useCases/$1",
-    "^@controller/(.*)$": "<rootDir>/src/adapters/controller/$1",
-    "^@repository/(.*)$": "<rootDir>/src/adapters/repository/$1",
-    "^@interface/(.*)$": "<rootDir>/src/application/interface/$1",
-    "^@dto/(.*)$": "<rootDir>/src/application/DTOs/$1"
-  }
+  "rootDir": "./__tests__",
+  "testRegex": "./*\\.(test|spec)\\.ts$"
 }
