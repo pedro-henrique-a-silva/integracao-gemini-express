@@ -26,10 +26,13 @@ export type listOfMeasuresDto = {
   measures: MeasuresDto[],
 };
 
-
-export type SavedImageInfo = {
-  fileName: string,
+export type ImageData = {
+  imageBase64Format: string,
   mimeType: string,
+}
+
+export type SavedImageInfo = ImageData & {
+  fileId: string
 };
 
 export type MeasureDataFromDB = {
