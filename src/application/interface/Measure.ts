@@ -13,6 +13,19 @@ export type MeasurementSuceessResponseDto = {
   image_url: string,
 };
 
+export type MeasuresDto = {
+  measure_uuid: string,
+  measure_datetime: Date,
+  measure_type: MeasureType,
+  has_confirmed: boolean,
+  image_url: string,
+}
+
+export type listOfMeasuresDto = {
+  customer_code: string,
+  measures: MeasuresDto[],
+};
+
 
 export type SavedImageInfo = {
   fileName: string,
