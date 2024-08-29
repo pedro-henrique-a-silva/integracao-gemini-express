@@ -90,7 +90,7 @@ export const processMeasurementList = async (
   customerId: string, measureType: MeasureType | undefined,
 ): Promise<ServiceResponse<listOfMeasuresDto>> => {
   const measures = await getAllMeasuresById(customerId, measureType);
-  console.log(measures);
+  
   if (measures.length === 0) {
     throw new MeasuresNotFoundException('Nenhuma leitura encontrada');
   }
