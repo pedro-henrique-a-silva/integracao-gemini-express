@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { processMeasurementUpload } from '../../domain/measuresDomain';
+import { processMeasurementConfirmation, processMeasurementUpload } from '../../domain/measuresDomain';
 import statusCode from '../statusCode';
 
 export const uploadMeasurementController = async (req: Request, res: Response) => {
@@ -19,6 +19,9 @@ export const uploadMeasurementController = async (req: Request, res: Response) =
 
 export const confirmMeasurementController = async (req: Request, res: Response) => {
   const { measure_uuid, confirmed_value } = req.body;
-  return res.status(200).send('Confirm measurement');
+
+  const result = await processMeasurementConfirmation(measure_uuid, confirmed_value);
+
+  return res.status(statusCode[result.status]).json(result.data);
 }
 
