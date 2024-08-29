@@ -1,7 +1,8 @@
 import express from 'express';
 import { 
   uploadMeasurementController, 
-  confirmMeasurementController } from '../controller/measureController';
+  confirmMeasurementController, 
+  listMeasurentsController} from '../controller/measureController';
 import {
   checkIfBase64ImageIsValid,
   checkIfCustomerCodeIsValid,
@@ -11,6 +12,9 @@ import {
 import { 
   checkIfConfirmedValueIsValid, 
   checkIfMeasureUUIDIsValid } from '../middlewares/confimationMiddleware';
+import { 
+  checkIfMeasureTypeQueryParamIsValid, 
+  checkIfMeasureUUIDUrlParamIsValid } from '../middlewares/listMeasurementsMiddleware';
 
 const measureRouter = express.Router();
 
@@ -27,6 +31,13 @@ measureRouter.patch(
   '/confirm',
   checkIfMeasureUUIDIsValid,
   checkIfConfirmedValueIsValid,
-  confirmMeasurementController);
+  confirmMeasurementController
+);
+
+measureRouter.get(
+  '/:customerId/list',
+  checkIfMeasureUUIDUrlParamIsValid,
+  checkIfMeasureTypeQueryParamIsValid,
+  listMeasurentsController)
 
 export default measureRouter;
