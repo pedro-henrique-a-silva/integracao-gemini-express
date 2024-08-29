@@ -21,7 +21,7 @@ enum Measure {
 model Measures {
   id          String @id @default(uuid())
   customerId  String @map("custumer_id")
-  measureType Measure @map("measute_type")
+  measureType Measure @map("measure_type")
   measureValue Float @map("measure_value")
   confirmedValue Int? @map("confirmed_value")
   measureDate DateTime @map("measure_date")

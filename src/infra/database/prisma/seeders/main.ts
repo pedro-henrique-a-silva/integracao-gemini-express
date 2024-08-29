@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import userSeed from './user.seed';
+import measureSeed from './measure.seed';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await userSeed();
+  await measureSeed();
 }
 
 main()
