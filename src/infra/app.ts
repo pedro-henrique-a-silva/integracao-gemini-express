@@ -14,11 +14,13 @@ app.get('/', (req, res) => {
   res.status(200).send('Hello World');
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '..', '..', 'tmp', 'uploads')));
 
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof CustomError) {
-    return res.status(err.statusCode).json({ errorCode: err.errorCode, message: err.message });
+    return res.status(err.statusCode).json({
+      errorCode: err.errorCode, errorDescription: err.message,
+    });
   }
   return res.status(500).json({ errorCode: 'internal_server_error', message: err.message });
 });
