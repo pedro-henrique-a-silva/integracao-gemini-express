@@ -1,13 +1,24 @@
 import DoubleReportException from '../adapters/exceptions/DoubleReportException';
-import getMeasureFromGemini from '../infra/gemini/apiGemini';
+import { getMeasureFromGemini } from '../infra/gemini/apiGemini';
 import {
   MeasureDataFromDB,
-  MeasurementRequestPayload,
+  MeasurementDataToPersist,
+  MeasurementRequestPayloadDto,
+  MeasurementSuceessResponseDto,
   MeasureType } from '../application/interface/Measure';
 import { saveImageBase64IntoFile } from './utils/utils';
 import {
   createNewMeasure,
   getRecordForCurrentMonth } from '../adapters/repository/measureRepository';
+import { ServiceResponse } from '../application/interface/Responses';
+
+export const convertMeasurePayloadToPersistDataType = (
+  measureData: MeasurementRequestPayloadDto,
+): Omit<MeasurementDataToPersist, 'measureValue' | 'imageUrl'> => ({
+  customerId: measureData.customerCode,
+  measureDate: new Date(measureData.measureDatetime),
+  measureType: measureData.measureType,
+});
 
 export const isMeasurementDoneForCurrentMonth = async (
   customerId: string,
@@ -22,10 +33,10 @@ export const isMeasurementDoneForCurrentMonth = async (
 };
 
 export const processMeasurementUpload = async (
-  measureData: MeasurementRequestPayload,
-): Promise<MeasureDataFromDB> => {
+  measureData: MeasurementRequestPayloadDto,
+): Promise<ServiceResponse<MeasurementSuceessResponseDto>> => {
   const {
-    image, custumerCode: custumerId, measureDatetime: measureDate, measureType,
+    image, customerCode: custumerId, measureDatetime: measureDate, measureType,
   } = measureData;
 
   await isMeasurementDoneForCurrentMonth(custumerId, measureType, new Date(measureDate));
@@ -33,17 +44,22 @@ export const processMeasurementUpload = async (
   const result = await saveImageBase64IntoFile(image);
 
   if (result) {
-    const measureValue = await getMeasureFromGemini(result.imagePath, result.mimeType);
+    const measureValue = await getMeasureFromGemini(result.fileName, result.mimeType);
 
-    const createdMeasure = await createNewMeasure({
-      custumerId,
-      measureDate: new Date(measureDate),
-      measureType,
-      imageUrl: result.imagePath,
-      measureValue,
+    const measureDataToPersist = convertMeasurePayloadToPersistDataType(measureData);
+    const createdMeasure = await createNewMeasure({ 
+      measureValue, imageUrl: `http://localhost:3001/uploads/${result.fileName}`, ...measureDataToPersist 
     });
-    return createdMeasure;
+
+    const response = {
+      measure_uuid: createdMeasure.id,
+      measure_value: createdMeasure.measureValue,
+      image_url: createdMeasure.imageUrl,
+    };
+
+    return { status: 'SUCCESSFUL', data: response };
   }
+  return { status: 'UNABLE_TO_PROCESS', data: { message: 'Erro ao processar solicitação' } };
 };
 
 export default {};
