@@ -51,11 +51,11 @@ export const processMeasurementUpload = async (
   const result = await saveImageBase64IntoFile(image);
 
   if (result) {
-    const measureValue = await getMeasureFromGemini(result.fileName, result.mimeType);
+    const measureValue = await getMeasureFromGemini(result.imageBase64Format, result.mimeType);
 
     const measureDataToPersist = convertMeasurePayloadToPersistDataType(measureData);
     const createdMeasure = await createNewMeasure({ 
-      measureValue, imageUrl: `http://localhost:3001/uploads/${result.fileName}`, ...measureDataToPersist 
+      measureValue, imageUrl: `http://localhost:3001/image/${result.fileId}`, ...measureDataToPersist 
     });
 
     const response = {
