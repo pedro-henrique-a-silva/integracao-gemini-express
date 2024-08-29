@@ -1,15 +1,21 @@
 export type MeasureType = 'WATER' | 'GAS';
 
-export type MeasurementRequestPayload = {
+export type MeasurementRequestPayloadDto = {
   image: string,
-  custumerCode: string
+  customerCode: string
   measureDatetime: string,
   measureType: MeasureType,
-
 };
 
+export type MeasurementSuceessResponseDto = {
+  measure_uuid: string,
+  measure_value: number,
+  image_url: string,
+};
+
+
 export type SavedImageInfo = {
-  imagePath: string,
+  fileName: string,
   mimeType: string,
 };
 
@@ -17,7 +23,7 @@ export type MeasureDataFromDB = {
   id: string,
   measureValue: number,
   imageUrl: string,
-  custumerId: string
+  customerId: string
   measureDate: Date,
   confirmedValue: number | null,
   measureType: MeasureType,
