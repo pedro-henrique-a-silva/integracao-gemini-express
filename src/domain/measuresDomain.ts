@@ -81,7 +81,7 @@ async (measureUuid: string, confirmedValue: number): Promise<ServiceResponse<{su
     throw new ConfirmationDuplicatedException('Leitura do mês já realizada');
   }
 
-  updateMeasureConfirmation(measureUuid, confirmedValue);
+  await updateMeasureConfirmation(measureUuid, confirmedValue);
 
   return { status: 'SUCCESSFUL', data: { success: true } };
 }
