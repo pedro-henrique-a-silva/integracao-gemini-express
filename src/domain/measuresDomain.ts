@@ -9,8 +9,12 @@ import {
 import { saveImageBase64IntoFile } from './utils/utils';
 import {
   createNewMeasure,
-  getRecordForCurrentMonth } from '../adapters/repository/measureRepository';
+  getMeasureById,
+  getRecordForCurrentMonth, 
+  updateMeasureConfirmation} from '../adapters/repository/measureRepository';
 import { ServiceResponse } from '../application/interface/Responses';
+import MeasureNotFoundException from '../adapters/exceptions/MeasureNotFoundException';
+import ConfirmationDuplicatedException from '../adapters/exceptions/ConfirmationDuplicatedException';
 
 export const convertMeasurePayloadToPersistDataType = (
   measureData: MeasurementRequestPayloadDto,
@@ -62,4 +66,19 @@ export const processMeasurementUpload = async (
   return { status: 'UNABLE_TO_PROCESS', data: { message: 'Erro ao processar solicitação' } };
 };
 
-export default {};
+export const processMeasurementConfirmation = 
+async (measureUuid: string, confirmedValue: number): Promise<ServiceResponse<{success: boolean}>> => {
+  const measure = await getMeasureById(measureUuid);
+
+  if (!measure) {
+    throw new MeasureNotFoundException('Leitura do mês ainda não realizada');
+  }
+
+  if (measure.confirmedValue) {
+    throw new ConfirmationDuplicatedException('Leitura do mês já realizada');
+  }
+
+  updateMeasureConfirmation(measureUuid, confirmedValue);
+
+  return { status: 'SUCCESSFUL', data: { success: true } };
+}
