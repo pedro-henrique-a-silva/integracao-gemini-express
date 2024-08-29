@@ -45,3 +45,22 @@ export const getRecordForCurrentMonth = async (
 
   return measure;
 };
+
+export const getMeasureById = async (measureId: string): Promise<MeasureDataFromDB | null> => {
+  const measure = await prisma.measures.findUnique({
+    where: {
+      id: measureId,
+    },
+  });
+
+  if (measure) return prismaToModel(measure);
+
+  return measure;
+};
+
+export const updateMeasureConfirmation = async (measureUuid: string, confirmedValue: number) => {
+  const updatedMeasure = await prisma.measures.update({
+    where: { id: measureUuid },
+    data: { confirmedValue: confirmedValue },
+  });
+}
