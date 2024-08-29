@@ -8,7 +8,7 @@
     "db:seed": "npx prisma db seed",
     "predev": "npm run db:migrate",
     "dev": "ts-node-dev --transpile-only --watch './src' --ignore-watch 'node_modules' --ignore-watch './src/infra/uploads' src/infra/server.ts",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "prisma": {
     "schema": "src/infra/database/prisma/schema.prisma",
