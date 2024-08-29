@@ -22,7 +22,7 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
       errorCode: err.errorCode, errorDescription: err.message,
     });
   }
-  return res.status(500).json({ errorCode: 'internal_server_error', message: err.message });
+  return res.status(500).json({ errorCode: 'internal_server_error', message: "Opss! Ocorreu um erro" });
 });
 
 export default app;
