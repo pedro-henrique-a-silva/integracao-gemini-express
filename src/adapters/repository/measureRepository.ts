@@ -64,3 +64,17 @@ export const updateMeasureConfirmation = async (measureUuid: string, confirmedVa
     data: { confirmedValue: confirmedValue },
   });
 }
+
+export const getAllMeasuresById = async (
+  customerId: string, 
+  measureType: MeasureType | undefined
+): Promise<MeasureDataFromDB[]> => {
+  const measures = await prisma.measures.findMany({
+    where: {
+      customerId,
+      measureType,
+    },
+  });
+
+  return measures.map(prismaToModel);
+}
