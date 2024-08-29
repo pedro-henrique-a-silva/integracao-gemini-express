@@ -10,10 +10,10 @@ const prismaToModel = (measure: Measures): MeasureDataFromDB => ({
   id: measure.id,
   measureValue: measure.measureValue,
   imageUrl: measure.imageUrl,
-  custumerId: measure.custumerId,
+  customerId: measure.customerId,
   measureDate: measure.measureDate,
   confirmedValue: measure.confirmedValue,
-  measureType: measure.measureType,
+  measureType: measure.measureType as MeasureType,
   createdAt: measure.createdAt,
   updatedAt: measure.updatedAt,
 });
@@ -26,13 +26,13 @@ export const createNewMeasure = async (measureData: MeasurementDataToPersist) =>
 };
 
 export const getRecordForCurrentMonth = async (
-  custumerId: string,
+  customerId: string,
   measureType: MeasureType,
   measureDate: Date,
 ): Promise<MeasureDataFromDB | null> => {
   const measure = await prisma.measures.findFirst({
     where: {
-      custumerId,
+      customerId,
       measureType,
       measureDate: {
         gte: new Date(measureDate.getFullYear(), measureDate.getMonth(), 1),
@@ -40,7 +40,6 @@ export const getRecordForCurrentMonth = async (
       },
     },
   });
-  console.log(measure);
 
   if (measure) return prismaToModel(measure);
 
