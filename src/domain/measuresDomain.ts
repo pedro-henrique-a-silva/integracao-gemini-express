@@ -1,7 +1,7 @@
 import DoubleReportException from '../adapters/exceptions/DoubleReportException';
 import { getMeasureFromGemini } from '../infra/gemini/apiGemini';
 import {
-  MeasureDataFromDB,
+  listOfMeasuresDto,
   MeasurementDataToPersist,
   MeasurementRequestPayloadDto,
   MeasurementSuceessResponseDto,
@@ -11,10 +11,13 @@ import {
   createNewMeasure,
   getMeasureById,
   getRecordForCurrentMonth, 
-  updateMeasureConfirmation} from '../adapters/repository/measureRepository';
+  updateMeasureConfirmation,
+  getAllMeasuresById
+} from '../adapters/repository/measureRepository';
 import { ServiceResponse } from '../application/interface/Responses';
 import MeasureNotFoundException from '../adapters/exceptions/MeasureNotFoundException';
 import ConfirmationDuplicatedException from '../adapters/exceptions/ConfirmationDuplicatedException';
+import MeasuresNotFoundException from '../adapters/exceptions/MeasuresNotFoundException';
 
 export const convertMeasurePayloadToPersistDataType = (
   measureData: MeasurementRequestPayloadDto,
@@ -81,4 +84,24 @@ async (measureUuid: string, confirmedValue: number): Promise<ServiceResponse<{su
   updateMeasureConfirmation(measureUuid, confirmedValue);
 
   return { status: 'SUCCESSFUL', data: { success: true } };
+}
+
+export const processMeasurementList = async (
+  customerId: string, measureType: MeasureType | undefined,
+): Promise<ServiceResponse<listOfMeasuresDto>> => {
+  const measures = await getAllMeasuresById(customerId, measureType);
+  console.log(measures);
+  if (measures.length === 0) {
+    throw new MeasuresNotFoundException('Nenhuma leitura encontrada');
+  }
+
+  const listOfMeasures = measures.map((measure) => ({
+    measure_uuid : measure.id,
+    measure_datetime : measure.measureDate,
+    measure_type : measure.measureType,
+    has_confirmed : !!measure.confirmedValue,
+    image_url : measure.imageUrl,
+  }));
+
+  return { status: 'SUCCESSFUL', data: {customer_code: customerId, measures: listOfMeasures} };
 }
