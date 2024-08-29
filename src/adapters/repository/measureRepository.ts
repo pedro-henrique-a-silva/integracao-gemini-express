@@ -18,7 +18,9 @@ const prismaToModel = (measure: Measures): MeasureDataFromDB => ({
   updatedAt: measure.updatedAt,
 });
 
-export const createNewMeasure = async (measureData: MeasurementDataToPersist) => {
+export const createNewMeasure = async (
+  measureData: MeasurementDataToPersist
+): Promise<MeasureDataFromDB> => {
   const newMeasure = await prisma.measures.create({
     data: measureData,
   });
@@ -46,7 +48,9 @@ export const getRecordForCurrentMonth = async (
   return measure;
 };
 
-export const getMeasureById = async (measureId: string): Promise<MeasureDataFromDB | null> => {
+export const getMeasureById = async (
+  measureId: string
+): Promise<MeasureDataFromDB | null> => {
   const measure = await prisma.measures.findUnique({
     where: {
       id: measureId,
@@ -58,7 +62,10 @@ export const getMeasureById = async (measureId: string): Promise<MeasureDataFrom
   return measure;
 };
 
-export const updateMeasureConfirmation = async (measureUuid: string, confirmedValue: number) => {
+export const updateMeasureConfirmation = async (
+  measureUuid: string, 
+  confirmedValue: number
+): Promise<void> => {
   const updatedMeasure = await prisma.measures.update({
     where: { id: measureUuid },
     data: { confirmedValue: confirmedValue },
