@@ -26,10 +26,9 @@ export const saveImageBase64IntoFile = async (
     const fileName = `${imageId}.${imageData.getExtension()}`;
 
     const imagePath = path.join(__dirname, '..', '..', '..', 'tmp', 'uploads', fileName);
-    console.log(`Saving image: ${imagePath}`);
 
     await imageData.writeAsync(imagePath);
-    return { imagePath: fileName, mimeType: imageData.getMIME() };
+    return { fileName, mimeType: imageData.getMIME() };
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log('Erro ao savar, iamge', err.message);
