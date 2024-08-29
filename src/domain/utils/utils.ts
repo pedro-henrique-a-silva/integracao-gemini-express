@@ -2,6 +2,7 @@ import Jimp from 'jimp';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import InvalidDataException from '../../adapters/exceptions/InvalidDataException';
+import { SavedImageInfo } from '../../application/interface/Measure';
 
 export const checkIfImageBase64IsValid = async (image: string): Promise<void> => {
   const buf = Buffer.from(image, 'base64');
@@ -13,16 +14,22 @@ export const checkIfImageBase64IsValid = async (image: string): Promise<void> =>
   }
 };
 
-export const saveImageBase64IntoFile = async (image: string): Promise<void> => {
+export const saveImageBase64IntoFile = async (
+  image: string,
+): Promise<SavedImageInfo | undefined> => {
   const buf = Buffer.from(image, 'base64');
 
   try {
     const imageData = await Jimp.read(buf);
 
     const imageId = uuidv4();
-    const imagePath = path.join(__dirname, '../../infra', 'uploads', `${imageId}.png`);
+    const fileName = `${imageId}.${imageData.getExtension()}`;
 
-    imageData.write(imagePath);
+    const imagePath = path.join(__dirname, '..', '..', '..', 'tmp', 'uploads', fileName);
+    console.log(`Saving image: ${imagePath}`);
+
+    await imageData.writeAsync(imagePath);
+    return { imagePath: fileName, mimeType: imageData.getMIME() };
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log('Erro ao savar, iamge', err.message);
