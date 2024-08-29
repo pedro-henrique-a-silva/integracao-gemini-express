@@ -13,17 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        String @id @default(uuid())
-  name      String @unique
-  email     String @unique
-  createdAt DateTime @map("created_at") @default(now())
-  updatedAt DateTime @map("updated_at") 
-  Measures Measures[]
-
-  @@map("customers")
-}
-
 enum Measure {
   WATER
   GAS
@@ -31,15 +20,14 @@ enum Measure {
 
 model Measures {
   id          String @id @default(uuid())
-  custumer Customer @relation(fields: [custumerId], references: [id])
-  custumerId  String @map("custumer_id")
-  measuteType Measure @map("measute_type")
+  customerId  String @map("custumer_id")
+  measureType Measure @map("measute_type")
   measureValue Float @map("measure_value")
-  confirmedValue Float @map("confirmed_value")
+  confirmedValue Int? @map("confirmed_value")
   measureDate DateTime @map("measure_date")
   imageUrl    String @map("image_url")
-  createdAt DateTime @map("created_at") @default(now())
-  updatedAt DateTime @map("updated_at") 
+  createdAt DateTime? @map("created_at") @default(now())
+  updatedAt DateTime? @map("updated_at") @default(now())
 
   @@map("measures")
 }
