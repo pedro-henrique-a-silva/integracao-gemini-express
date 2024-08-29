@@ -4,14 +4,14 @@ import fs from 'fs';
 
 const geminiAPIKey = process.env.GEMINI_API_KEY || '';
 
-const fileToGenerativePart = (filePath: string, mimeType: string) => ({
+export const fileToGenerativePart = (filePath: string, mimeType: string) => ({
   inlineData: {
     data: Buffer.from(fs.readFileSync(filePath)).toString('base64'),
     mimeType,
   },
 });
 
-const getMeasureFromGemini = async (filePath: string, mimeType: string): Promise<number> => {
+export const getMeasureFromGemini = async (filePath: string, mimeType: string): Promise<number> => {
   const genAI = new GoogleGenerativeAI(geminiAPIKey);
 
   const imagePath = path.join(__dirname, '..', '..', '..', 'tmp', 'uploads', filePath);
@@ -34,5 +34,3 @@ const getMeasureFromGemini = async (filePath: string, mimeType: string): Promise
 
   return Number(generatedContent.response.text());
 };
-
-export default getMeasureFromGemini;
