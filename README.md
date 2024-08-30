@@ -105,10 +105,10 @@ Faz o upload de uma imagem e retorna um link temporário para acessá-la externa
 
 ```
 
-- image: A imagem em formato base64. Apenas a parte do conteúdo base64 da imagem deve ser incluída, sem o prefixo data:image/webp;base64,.
-- customer_code: Código do cliente. (string)
-- measure_datetime: Data e hora da medição. (datetime)
-- measure_type: Tipo de medição, que pode ser "WATER" para água ou "GAS" para gás. (string)
+- **image**: A imagem em formato base64. Apenas a parte do conteúdo base64 da imagem deve ser incluída, sem o prefixo como por exemplo: `data:image/jpg;base64,`.
+- **customer_code**: Código do cliente. (string)
+- **measure_datetime**: Data e hora da medição. (datetime)
+- **measure_type**: Tipo de medição, que pode ser "WATER" para água ou "GAS" para gás. (string)
 
 #### Confirmar uma Leitura
 
@@ -124,8 +124,8 @@ Confirma a leitura de uma imagem enviada para a IA.
 }
 ```
 
-- measure_uuid: UUID da medição que está sendo confirmada. (string)
-- confirmed_value: Valor confirmado da medição. (integer)
+- **measure_uuid**: UUID da medição que está sendo confirmada. (string)
+- **confirmed_value**: Valor confirmado da medição. (integer)
 
 #### Listar Leituras
 
