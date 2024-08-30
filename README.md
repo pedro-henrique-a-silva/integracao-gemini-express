@@ -35,7 +35,7 @@ Este projeto integra uma aplicação Node.js com a IA Gemini do Google. O objeti
 ```
 
 ```bash
-  cd projeto-gemini
+  cd integracao-gemini-express
 ```
 2. Configurações Iniciais
 
