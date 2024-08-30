@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:migrate": "npx prisma migrate reset --force",
+    "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx prisma db seed",
     "predev": "npm run db:migrate",
     "dev": "ts-node-dev --transpile-only --watch './src' --ignore-watch 'node_modules' --ignore-watch './src/infra/uploads' src/infra/server.ts",
