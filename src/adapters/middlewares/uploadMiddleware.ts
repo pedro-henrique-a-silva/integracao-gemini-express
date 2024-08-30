@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { checkIfImageBase64IsValid } from '../../domain/utils/utils';
+import { checkIfImageBase64IsValid } from '../../domain/imagesDomain';
 import InvalidDataException from '../exceptions/InvalidDataException';
 
 export const checkIfBase64ImageIsValid = async (
