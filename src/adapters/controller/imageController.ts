@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getImage from "../../domain/imagesDomain";
+import { getImage } from "../../domain/imagesDomain";
 
 const getImageController = async (req: Request, res: Response) => {
   const { id } = req.params;

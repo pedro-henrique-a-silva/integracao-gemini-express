@@ -6,7 +6,7 @@ import {
   MeasurementRequestPayloadDto,
   MeasurementSuceessResponseDto,
   MeasureType } from '../application/interface/Measure';
-import { saveImageBase64IntoFile } from './utils/utils';
+import { saveImageBase64IntoFile } from './imagesDomain';
 import {
   createNewMeasure,
   getMeasureById,
