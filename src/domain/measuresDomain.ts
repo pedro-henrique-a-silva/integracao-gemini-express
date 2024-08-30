@@ -19,6 +19,8 @@ import MeasureNotFoundException from '../adapters/exceptions/MeasureNotFoundExce
 import ConfirmationDuplicatedException from '../adapters/exceptions/ConfirmationDuplicatedException';
 import MeasuresNotFoundException from '../adapters/exceptions/MeasuresNotFoundException';
 
+const API_URL_BASE = process.env.API_URL_BASE || 'http://localhost:3001';
+
 export const convertMeasurePayloadToPersistDataType = (
   measureData: MeasurementRequestPayloadDto,
 ): Omit<MeasurementDataToPersist, 'measureValue' | 'imageUrl'> => ({
@@ -55,7 +57,7 @@ export const processMeasurementUpload = async (
 
     const measureDataToPersist = convertMeasurePayloadToPersistDataType(measureData);
     const createdMeasure = await createNewMeasure({ 
-      measureValue, imageUrl: `http://localhost:3001/image/${result.fileId}`, ...measureDataToPersist 
+      measureValue, imageUrl: `${API_URL_BASE}/image/${result.fileId}`, ...measureDataToPersist 
     });
 
     const response = {
