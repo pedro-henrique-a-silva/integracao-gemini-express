@@ -46,7 +46,10 @@ Você pode fazer isso com o comando abaixo:
 ```bash
 cp .env.exemplo .env
 ```
-Edite o arquivo .env conforme suas necessidades, preenchendo as variáveis como a API Key do Google Gemini.
+Edite o arquivo .env conforme suas necessidades, preenchendo as variáveis como a API Key do Google Gemini, url base da api, e tempo de expiração do link da imagem.
+
+> ⚠️ Atenção: o tempo de expiração do link das imagens, que pode ser informado através da variável de ambiente `IMAGE_EXPIRATION_TIME`, deve ser especificado em minutos.
+
 
 3. Suba os Containers com Docker
 
